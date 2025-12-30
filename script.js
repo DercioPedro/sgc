@@ -624,8 +624,8 @@
         // ===== LOGIN =====
 
         // credenciais (uso particular)
-        const USUARIO = 'admin';
-        const SENHA = '1234';
+        const USUARIO = 'LUISHORACIO';
+        const SENHA = '4321';
 
         // verificar sessão ao carregar
         function verificarLogin() {
@@ -717,3 +717,4 @@
             verificarLogin();
 
         };
+
