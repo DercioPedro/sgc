@@ -20,10 +20,10 @@
                 tr.innerHTML = `
     <td>${p.nome}</td>
     <td>${p.categoria || '-'}</td>
-    <td class="text-right">€${p.precoCompra.toFixed(2)}</td>
-    <td class="text-right">€${p.precoVenda.toFixed(2)}</td>
-    <td class="text-right ${p.quantidade < 10 ? 'low-stock' : ''}">${p.quantidade}</td>
-    <td class="text-right text-green">€${(p.precoVenda - p.precoCompra).toFixed(2)}</td>
+    <td class="text-right">MT${p.precoCompra.toFixed(2)}</td>
+    <td class="text-right">MT${p.precoVenda.toFixed(2)}</td>
+    <td class="text-right MT{p.quantidade < 10 ? 'low-stock' : ''}">${p.quantidade}</td>
+    <td class="text-right text-green">MT${(p.precoVenda - p.precoCompra).toFixed(2)}</td>
     <td class="text-center">
         <button class="btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.85rem"
             onclick="confirmarRemocaoProduto(${p.id})">
@@ -47,9 +47,9 @@
                     <td>${new Date(v.data).toLocaleString('pt-PT')}</td>
                     <td>${v.nomeProduto}</td>
                     <td class="text-right">${v.quantidade}</td>
-                    <td class="text-right">€${v.precoUnitario.toFixed(2)}</td>
-                    <td class="text-right"><strong>€${v.valorTotal.toFixed(2)}</strong></td>
-                    <td class="text-right text-green"><strong>€${v.lucro.toFixed(2)}</strong></td>
+                    <td class="text-right">MT${v.precoUnitario.toFixed(2)}</td>
+                    <td class="text-right"><strong>MT${v.valorTotal.toFixed(2)}</strong></td>
+                    <td class="text-right text-green"><strong>MT${v.lucro.toFixed(2)}</strong></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -715,4 +715,5 @@
 
         window.onload = function () {
             verificarLogin();
+
         };
