@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão Comercial</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+
+
+<body>
+    <div id="login" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
+        <div
+            style="background:white;padding:2rem;border-radius:0.5rem;width:320px;box-shadow:0 10px 20px rgba(0,0,0,0.1);">
+            <h2 style="text-align:center;margin-bottom:1.5rem;">🔐 Login</h2>
+
+            <input type="text" id="loginUser" placeholder="Usuário"
+                style="width:100%;padding:0.7rem;margin-bottom:1rem;border:1px solid #d1d5db;border-radius:0.375rem">
+
+            <input type="password" id="loginPass" placeholder="Senha"
+                style="width:100%;padding:0.7rem;margin-bottom:1rem;border:1px solid #d1d5db;border-radius:0.375rem">
+
+            <button class="btn-primary" style="width:100%" onclick="login()">Entrar</button>
+
+            <p id="loginErro" style="color:#dc2626;text-align:center;margin-top:1rem;display:none;">
+                Usuário ou senha inválidos
+            </p>
+        </div>
+    </div>
+
+    <div id="app" style="display:none;">
+        <div class="header">
+            <h1>Sistema de Gestão Comercial</h1>
+            <button onclick="logout()" style="float:right;background:#ef4444;color:white;border:none;
+    padding:0.5rem 1rem;border-radius:0.375rem;cursor:pointer;">
+                Sair
+            </button>
+
+            <p>Controlo completo do seu negócio</p>
+        </div>
+
+        <div class="container">
+            <div class="tabs">
+                <button class="tab-button active" onclick="showTab('dashboard')">Dashboard</button>
+                <button class="tab-button" onclick="showTab('produtos')">Produtos</button>
+                <button class="tab-button" onclick="showTab('vendas')">Vendas</button>
+                <button class="tab-button" onclick="showTab('despesas')">Despesas</button>
+                <button class="tab-button" onclick="showTab('stock')">Stock</button>
+                <button class="tab-button" onclick="showTab('relatorios')">Relatórios</button>
+
+            </div>
+
+            <div class="content">
+                <!-- Dashboard -->
+                <div id="dashboard" class="tab-content active">
+                    <div class="cards-grid">
+                        <div class="card card-blue">
+                            <div class="card-content">
+                                <h3>Total de Produtos</h3>
+                                <p class="text-blue" id="totalProdutos">0</p>
+                            </div>
+                            <div class="card-icon">📦</div>
+                        </div>
+                        <div class="card card-green">
+                            <div class="card-content">
+                                <h3>Total Vendas</h3>
+                                <p class="text-green" id="totalVendas">MT0.00</p>
+                            </div>
+                            <div class="card-icon">📈</div>
+                        </div>
+                        <div class="card card-red">
+                            <div class="card-content">
+                                <h3>Total Despesas</h3>
+                                <p class="text-red" id="totalDespesas">MT 0.00</p>
+                            </div>
+                            <div class="card-icon">📉</div>
+                        </div>
+                        <div class="card card-purple">
+                            <div class="card-content">
+                                <h3>Saldo</h3>
+                                <p class="text-purple" id="saldo">MT 0.00</p>
+                            </div>
+                            <div class="card-icon">💰</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3 style="margin-bottom: 1rem;">Produtos Mais Vendidos</h3>
+                        <canvas id="chartMaisVendidos"></canvas>
+                    </div>
+
+                    <div id="stockBaixo" style="margin-top: 2rem;"></div>
+                </div>
+
+                <!-- Produtos -->
+                <div id="produtos" class="tab-content">
+                    <div class="form-section">
+                        <h2>Cadastrar Novo Produto</h2>
+                        <div class="form-grid">
+                            <input type="text" id="produtoNome" placeholder="Nome do produto *" />
+                            <input type="text" id="produtoCategoria" placeholder="Categoria" />
+                            <input type="number" id="produtoPrecoCompra" placeholder="Preço de compra *" step="0.01" />
+                            <input type="number" id="produtoPrecoVenda" placeholder="Preço de venda *" step="0.01" />
+                            <input type="number" id="produtoQuantidade" placeholder="Quantidade inicial" />
+                            <button class="btn-primary" onclick="adicionarProduto()">Cadastrar Produto</button>
+                        </div>
+                    </div>
+
+                    <h2>Lista de Produtos</h2>
+                    <div style="overflow-x: auto;">
+                        <table id="tabelaProdutos">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Categoria</th>
+                                    <th class="text-right">Preço Compra</th>
+                                    <th class="text-right">Preço Venda</th>
+                                    <th class="text-right">Stock</th>
+                                    <th class="text-right">Margem</th>
+                                    <th class="text-center">Ações</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="listaProdutos"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Vendas -->
+                <div id="vendas" class="tab-content">
+                    <div class="form-section">
+                        <h2>Registrar Nova Venda</h2>
+                        <div class="form-grid">
+                            <select id="vendaProduto">
+                                <option value="">Selecione um produto</option>
+                            </select>
+                            <input type="number" id="vendaQuantidade" placeholder="Quantidade" />
+                            <button class="btn-success" onclick="registrarVenda()">Registrar Venda</button>
+                        </div>
+                    </div>
+
+                    <h2>Histórico de Vendas</h2>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Produto</th>
+                                    <th class="text-right">Quantidade</th>
+                                    <th class="text-right">Preço Unit.</th>
+                                    <th class="text-right">Total</th>
+                                    <th class="text-right">Lucro</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaVendas"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Despesas -->
+                <div id="despesas" class="tab-content">
+                    <div class="form-section">
+                        <h2>Registrar Nova Despesa</h2>
+                        <div class="form-grid">
+                            <input type="text" id="despesaDescricao" placeholder="Descrição" />
+                            <input type="number" id="despesaValor" placeholder="Valor" step="0.01" />
+                            <input type="text" id="despesaCategoria" placeholder="Categoria" />
+                            <button class="btn-danger" onclick="registrarDespesa()">Registrar Despesa</button>
+                        </div>
+                    </div>
+
+                    <h2>Histórico de Despesas</h2>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th class="text-right">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaDespesas"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="card card-blue" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="margin-bottom: 1rem;">Resumo Financeiro</h3>
+                            <div class="cards-grid">
+                                <div>
+                                    <p style="color: #6b7280; font-size: 0.875rem;">Entradas (Vendas)</p>
+                                    <p class="text-green" style="font-size: 1.5rem; font-weight: bold;"
+                                        id="resumoEntradas">
+                                        MT0.00</p>
+                                </div>
+                                <div>
+                                    <p style="color: #6b7280; font-size: 0.875rem;">Saídas (Despesas)</p>
+                                    <p class="text-red" style="font-size: 1.5rem; font-weight: bold;" id="resumoSaidas">
+                                        MT0.00</p>
+                                </div>
+                                <div>
+                                    <p style="color: #6b7280; font-size: 0.875rem;">Saldo em Caixa</p>
+                                    <p class="text-blue" style="font-size: 1.5rem; font-weight: bold;" id="resumoSaldo">
+                                        MT0.00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stock -->
+                <div id="stock" class="tab-content">
+                    <div class="form-section">
+                        <h2>Registrar Movimentação de Stock</h2>
+                        <div class="form-grid">
+                            <select id="movProduto">
+                                <option value="">Selecione um produto</option>
+                            </select>
+                            <select id="movTipo">
+                                <option value="entrada">Entrada</option>
+                                <option value="saida">Saída</option>
+                            </select>
+                            <input type="number" id="movQuantidade" placeholder="Quantidade" />
+                            <input type="text" id="movMotivo" placeholder="Motivo" />
+                            <button class="btn-purple" onclick="registrarMovimentacao()">Registrar</button>
+                        </div>
+                    </div>
+
+                    <h2>Histórico de Movimentações</h2>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Produto</th>
+                                    <th class="text-center">Tipo</th>
+                                    <th class="text-right">Quantidade</th>
+                                    <th>Motivo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaMovimentacoes"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Relatórios -->
+
+                <div id="relatorios" class="tab-content">
+                    <button class="btn-success" onclick="exportarExcel()">Exportar Excel</button>
+                    <div class="report-cards">
+                        <div class="report-card">
+                            <h3>Relatório Diário</h3>
+                            <div class="report-item">
+                                <p>Número de Vendas</p>
+                                <p class="text-blue" id="relDiarioQtd">0</p>
+                            </div>
+                            <div class="report-item">
+                                <p>Total em Vendas</p>
+                                <p class="text-green" id="relDiarioTotal">MT0.00</p>
+                            </div>
+                            <div class="report-item">
+                                <p>Lucro Estimado</p>
+                                <p class="text-purple" id="relDiarioLucro">MT0.00</p>
+                            </div>
+                        </div>
+
+                        <div class="report-card">
+                            <h3>Relatório Semanal</h3>
+                            <div class="report-item">
+                                <p>Número de Vendas</p>
+                                <p class="text-blue" id="relSemanalQtd">0</p>
+                            </div>
+                            <div class="report-item">
+                                <p>Total em Vendas</p>
+                                <p class="text-green" id="relSemanalTotal">MT0.00</p>
+                            </div>
+                            <div class="report-item">
+                                <p>Lucro Estimado</p>
+                                <p class="text-purple" id="relSemanalLucro">MT0.00</p>
+                            </div>
+                        </div>
+
+                        <div class="report-card">
+                            <h3>Relatório Mensal</h3>
+                            <div class="report-item">
+                                <p>Número de Vendas</p>
+                                <p class="text-blue" id="relMensalQtd">0</p>
+                            </div>
+                            <div class="report-item">
+                                <p>Total em Vendas</p>
+                                <p class="text-green" id="relMensalTotal">MT0.00</p>
+                            </div>
+                            <div class="report-item">
+                                <p>Lucro Estimado</p>
+                                <p class="text-purple" id="relMensalLucro">MT0.00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3 style="margin-bottom: 1rem;">Vendas dos Últimos 7 Dias</h3>
+                        <canvas id="chartVendas7Dias"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ <script src="script.js"></script>
+</body>
+
+</html>

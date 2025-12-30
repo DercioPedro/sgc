@@ -1,0 +1,358 @@
+      * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f9fafb;
+            color: #111827;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #bfdbfe;
+            font-size: 0.95rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .tabs {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .tab-button {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button:hover {
+            color: #2563eb;
+            background: #f3f4f6;
+        }
+
+        .tab-button.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .content {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 2px solid;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-blue {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+        }
+
+        .card-green {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .card-red {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
+        .card-purple {
+            background: #faf5ff;
+            border-color: #e9d5ff;
+        }
+
+        .card-content h3 {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-content p {
+            font-size: 1.875rem;
+            font-weight: bold;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+        }
+
+        .form-section {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 2rem;
+        }
+
+        .form-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-purple {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .btn-purple:hover {
+            background: #7c3aed;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        th,
+        td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #f3f4f6;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            color: #92400e;
+        }
+
+        .chart-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+        }
+
+        .report-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .report-card {
+            background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 2px solid #bfdbfe;
+        }
+
+        .report-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            text-transform: capitalize;
+        }
+
+        .report-item {
+            margin-bottom: 1rem;
+        }
+
+        .report-item p:first-child {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .report-item p:last-child {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-green {
+            color: #10b981;
+        }
+
+        .text-red {
+            color: #ef4444;
+        }
+
+        .text-blue {
+            color: #2563eb;
+        }
+
+        .text-purple {
+            color: #8b5cf6;
+        }
+
+        .low-stock {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                overflow-x: auto;
+            }
+
+            table {
+                font-size: 0.875rem;
+            }
+        }

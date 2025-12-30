@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Rápido - Vendas e Gastos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+            padding: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+            margin-top: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: #1e40af;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-box {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .stat-box .label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-box .value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .quick-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Registro Rápido</h1>
+            <p>Vendas e Gastos Simplificados</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('venda')">💰 Venda</button>
+            <button class="tab-btn" onclick="switchTab('gasto')">💸 Gasto</button>
+        </div>
+
+        <!-- Alertas -->
+        <div id="alertSuccess" class="alert alert-success"></div>
+        <div id="alertError" class="alert alert-error"></div>
+
+        <!-- Tab Venda -->
+        <div id="tabVenda" class="tab-content active">
+            <div class="card">
+                <h2><span class="icon">🛒</span> Registrar Venda</h2>
+                
+                <div class="info-box">
+                    ℹ️ Selecione o produto e quantidade para registrar a venda rapidamente
+                </div>
+
+                <form id="formVenda" onsubmit="registrarVendaRapida(event)">
+                    <div class="form-group">
+                        <label for="vendaProduto">Produto *</label>
+                        <select id="vendaProduto" required onchange="atualizarInfoProduto()">
+                            <option value="">Selecione um produto</option>
+                        </select>
+                    </div>
+
+                    <div id="infoProduto" style="display: none;">
+                        <div class="quick-stats">
+                            <div class="stat-box">
+                                <div class="label">Preço Unitário</div>
+                                <div class="value text-green" id="precoUnitario">MT 0.00</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="label">Stock Disponível</div>
+                                <div class="value text-blue" id="stockDisponivel">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vendaQuantidade">Quantidade *</label>
+                        <input type="number" id="vendaQuantidade" min="1" required 
+                               placeholder="Quantidade vendida" onchange="calcularTotal()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Total da Venda</label>
+                        <div style="background: #f0fdf4; border: 2px solid #10b981; border-radius: 0.5rem; 
+                                    padding: 1rem; text-align: center;">
+                            <div style="font-size: 0.875rem; color: #065f46; margin-bottom: 0.25rem;">
+                                Valor Total
+                            </div>
+                            <div style="font-size: 2rem; font-weight: bold; color: #10b981;" id="totalVenda">
+                                MT 0.00
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">
+                        <span>✓</span> Confirmar Venda
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab Gasto -->
+        <div id="tabGasto" class="tab-content">
+            <div class="card">
+                <h2><span class="icon">💸</span> Registrar Gasto</h2>
+                
+                <div class="info-box">
+                    ℹ️ Registre despesas e gastos do negócio de forma rápida
+                </div>
+
+                <form id="formGasto" onsubmit="registrarGastoRapido(event)">
+                    <div class="form-group">
+                        <label for="gastoDescricao">Descrição *</label>
+                        <input type="text" id="gastoDescricao" required 
+                               placeholder="Ex: Conta de luz, Compra de material...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gastoValor">Valor (MT) *</label>
+                        <input type="number" id="gastoValor" step="0.01" min="0.01" required 
+                               placeholder="0.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gastoCategoria">Categoria</label>
+                        <select id="gastoCategoria">
+                            <option value="">Selecione uma categoria</option>
+                            <option value="Aluguel">Aluguel</option>
+                            <option value="Água/Luz">Água/Luz</option>
+                            <option value="Salários">Salários</option>
+                            <option value="Compras">Compras</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Transporte">Transporte</option>
+                            <option value="Manutenção">Manutenção</option>
+                            <option value="Impostos">Impostos</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger">
+                        <span>✓</span> Confirmar Gasto
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Resumo Rápido -->
+        <div class="card">
+            <h2><span class="icon">📊</span> Resumo de Hoje</h2>
+            <div class="quick-stats">
+                <div class="stat-box">
+                    <div class="label">Vendas</div>
+                    <div class="value text-green" id="vendasHoje">MT 0.00</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Gastos</div>
+                    <div class="value text-red" id="gastosHoje">MT 0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <button class="btn btn-secondary" onclick="voltarParaIndex()"> -->
+            <!-- ← Voltar para o Sistema Principal -->
+        <!-- </button> -->
+    </div>
+
+    <script>
+        let dados = {
+            produtos: [],
+            vendas: [],
+            despesas: [],
+            movimentacoes: []
+        };
+
+        // Carregar dados do localStorage
+        function carregarDados() {
+            const dadosSalvos = localStorage.getItem('gestaoComercial');
+            if (dadosSalvos) {
+                dados = JSON.parse(dadosSalvos);
+            }
+            atualizarSelectProdutos();
+            atualizarResumoHoje();
+        }
+
+        // Salvar dados no localStorage
+        function salvarDados() {
+            localStorage.setItem('gestaoComercial', JSON.stringify(dados));
+        }
+
+        // Atualizar select de produtos
+        function atualizarSelectProdutos() {
+            const select = document.getElementById('vendaProduto');
+            select.innerHTML = '<option value="">Selecione um produto</option>';
+
+            dados.produtos
+                .filter(p => p.quantidade > 0)
+                .forEach(p => {
+                    const option = document.createElement('option');
+                    option.value = p.id;
+                    option.textContent = `${p.nome} (Stock: ${p.quantidade})`;
+                    select.appendChild(option);
+                });
+        }
+
+        // Atualizar informações do produto selecionado
+        function atualizarInfoProduto() {
+            const produtoId = parseInt(document.getElementById('vendaProduto').value);
+            const infoProduto = document.getElementById('infoProduto');
+            
+            if (!produtoId) {
+                infoProduto.style.display = 'none';
+                return;
+            }
+
+            const produto = dados.produtos.find(p => p.id === produtoId);
+            if (produto) {
+                document.getElementById('precoUnitario').textContent = `MT ${produto.precoVenda.toFixed(2)}`;
+                document.getElementById('stockDisponivel').textContent = produto.quantidade;
+                infoProduto.style.display = 'block';
+                calcularTotal();
+            }
+        }
+
+        // Calcular total da venda
+        function calcularTotal() {
+            const produtoId = parseInt(document.getElementById('vendaProduto').value);
+            const quantidade = parseInt(document.getElementById('vendaQuantidade').value) || 0;
+
+            if (!produtoId || !quantidade) {
+                document.getElementById('totalVenda').textContent = 'MT 0.00';
+                return;
+            }
+
+            const produto = dados.produtos.find(p => p.id === produtoId);
+            if (produto) {
+                const total = produto.precoVenda * quantidade;
+                document.getElementById('totalVenda').textContent = `MT ${total.toFixed(2)}`;
+            }
+        }
+
+        // Registrar venda rápida
+        function registrarVendaRapida(event) {
+            event.preventDefault();
+
+            const produtoId = parseInt(document.getElementById('vendaProduto').value);
+            const quantidade = parseInt(document.getElementById('vendaQuantidade').value);
+
+            const produto = dados.produtos.find(p => p.id === produtoId);
+
+            if (!produto) {
+                mostrarAlerta('Produto não encontrado!', 'error');
+                return;
+            }
+
+            if (produto.quantidade < quantidade) {
+                mostrarAlerta('Stock insuficiente!', 'error');
+                return;
+            }
+
+            // Criar venda
+            const venda = {
+                id: Date.now(),
+                produtoId: produto.id,
+                nomeProduto: produto.nome,
+                quantidade,
+                precoUnitario: produto.precoVenda,
+                valorTotal: produto.precoVenda * quantidade,
+                lucro: (produto.precoVenda - produto.precoCompra) * quantidade,
+                data: new Date().toISOString()
+            };
+
+            dados.vendas.push(venda);
+
+            // Atualizar stock
+            produto.quantidade -= quantidade;
+
+            // Registrar movimentação
+            dados.movimentacoes.push({
+                id: Date.now(),
+                produtoId: produto.id,
+                nomeProduto: produto.nome,
+                tipo: 'saida',
+                quantidade,
+                motivo: 'Venda - Registro Rápido',
+                data: new Date().toISOString()
+            });
+
+            salvarDados();
+
+            mostrarAlerta(`✓ Venda registrada! Total: MT ${venda.valorTotal.toFixed(2)}`, 'success');
+
+            // Limpar formulário
+            document.getElementById('formVenda').reset();
+            document.getElementById('infoProduto').style.display = 'none';
+            document.getElementById('totalVenda').textContent = 'MT 0.00';
+
+            atualizarSelectProdutos();
+            atualizarResumoHoje();
+        }
+
+        // Registrar gasto rápido
+        function registrarGastoRapido(event) {
+            event.preventDefault();
+
+            const descricao = document.getElementById('gastoDescricao').value;
+            const valor = parseFloat(document.getElementById('gastoValor').value);
+            const categoria = document.getElementById('gastoCategoria').value;
+
+            const despesa = {
+                id: Date.now(),
+                descricao,
+                valor,
+                categoria: categoria || 'Sem categoria',
+                data: new Date().toISOString()
+            };
+
+            dados.despesas.push(despesa);
+            salvarDados();
+
+            mostrarAlerta(`✓ Gasto registrado! Valor: MT ${valor.toFixed(2)}`, 'success');
+
+            // Limpar formulário
+            document.getElementById('formGasto').reset();
+
+            atualizarResumoHoje();
+        }
+
+        // Atualizar resumo de hoje
+        function atualizarResumoHoje() {
+            const hoje = new Date().toDateString();
+
+            const vendasHoje = dados.vendas
+                .filter(v => new Date(v.data).toDateString() === hoje)
+                .reduce((acc, v) => acc + v.valorTotal, 0);
+
+            const gastosHoje = dados.despesas
+                .filter(d => new Date(d.data).toDateString() === hoje)
+                .reduce((acc, d) => acc + d.valor, 0);
+
+            document.getElementById('vendasHoje').textContent = `MT ${vendasHoje.toFixed(2)}`;
+            document.getElementById('gastosHoje').textContent = `MT ${gastosHoje.toFixed(2)}`;
+        }
+
+        // Mostrar alerta
+        function mostrarAlerta(mensagem, tipo) {
+            const alertId = tipo === 'success' ? 'alertSuccess' : 'alertError';
+            const alert = document.getElementById(alertId);
+            
+            alert.textContent = mensagem;
+            alert.style.display = 'block';
+
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 4000);
+        }
+
+        // Trocar aba
+        function switchTab(tab) {
+            // Atualizar botões
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Atualizar conteúdo
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            if (tab === 'venda') {
+                document.getElementById('tabVenda').classList.add('active');
+            } else {
+                document.getElementById('tabGasto').classList.add('active');
+            }
+        }
+
+        // Voltar para o sistema principal
+        function voltarParaIndex() {
+            window.location.href = 'index.html';
+        }
+
+        // Inicializar ao carregar
+        window.onload = function() {
+            carregarDados();
+        };
+    </script>
+</body>
+</html>
